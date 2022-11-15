@@ -51,23 +51,11 @@ jobs:
       shell: sh
       run: ls -l build/distributions/
 
-    - name: Archive artifact
-      shell: sh
-      run: |
-        tar \
-          --dereference --hard-dereference \
-          -cvf "$RUNNER_TEMP/artifact.tar" \
-          build/distributions/*
-  
-    - name: Print artifact contents
-      shell: sh
-      run: tar -tf ${{ runner.temp }}/artifact.tar
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@main
+    - name: Upload GitHub Pages artifact
+      uses: actions/upload-pages-artifact@v1.0.4
       with:
-        name: github-pages
-        path: ${{ runner.temp }}/artifact.tar
+        # Path of the directory containing the static assets.
+        path: build/distribution/
 
     - name: Deploy to GitHub Pages
       id: deployment
