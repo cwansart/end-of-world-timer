@@ -48,8 +48,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
       
+      - name: Print distributions folder
+        run: ls -l build/distributions
+      
       - name: Zip artifact for deployment
-        run: zip release.zip ./build/distributions/* -r
+        run: zip -r release.zip build/distributions/*
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
