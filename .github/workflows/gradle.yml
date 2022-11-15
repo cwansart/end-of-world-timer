@@ -46,15 +46,17 @@ jobs:
     # Deploy
     - name: Setup Pages
       uses: actions/configure-pages@v2
+    
+    - name: Print distributions folder contents
+      shell: sh
+      run: ls -l build/distributions/
 
     - name: Archive artifact
       shell: sh
       run: |
         tar \
-          --dereference --hard-dereference \
-          --directory "build/distributions/" \
-          -cvf "$RUNNER_TEMP/artifact.tar"
-          .
+          -cvf "$RUNNER_TEMP/artifact.tar" \
+          build/distributions/*
 
     - name: Upload artifact
       uses: actions/upload-artifact@main
