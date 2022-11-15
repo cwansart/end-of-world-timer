@@ -3,6 +3,17 @@ body {
 }
 
 .center {
-    margin: auto;
-    width: 50%;
+   margin: auto;
+   width: 50%;
+}
+
+@media only screen and (orientation: portrait) {
+    .center {
+       margin: auto;
+       width: 100%;
+    }
+
+    .line {
+        margin-top: 1em;
+    }
 }

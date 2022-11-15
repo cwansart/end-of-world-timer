@@ -1,10 +1,7 @@
 import kotlinx.browser.document
 import kotlinx.browser.window
-import kotlinx.html.div
+import kotlinx.html.*
 import kotlinx.html.dom.append
-import kotlinx.html.h1
-import kotlinx.html.id
-import kotlinx.html.span
 import org.w3c.dom.Node
 import kotlin.js.Date
 import kotlin.math.roundToInt
@@ -64,6 +61,7 @@ fun Node.addContents() {
     remaining.keys.forEach {
         append {
             div {
+                classes = setOf("line")
                 +"${it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} remaining: "
                 span {
                     id = it
