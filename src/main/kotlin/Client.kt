@@ -6,17 +6,18 @@ import org.w3c.dom.Node
 import kotlin.js.Date
 import kotlin.math.roundToInt
 
-val endOfTime = Date("Fri, 23 Dec 2022 16:00:00 GMT+1")
-val endOfTimeSeconds = Date.parse("Fri, 23 Dec 2022 16:00:00 GMT+1")
-
 const val ONE_SECOND = 1_000
+const val END_OF_TIME = "Fri, 23 Dec 2022 16:00:00 GMT+1"
 
-val remaining = mutableMapOf(
-    "seconds" to 0,
-    "minutes" to 0,
-    "days" to 0,
-    "hours" to 0,
-    "weeks" to 0
+val endOfTime = Date(END_OF_TIME)
+val endOfTimeSeconds = Date.parse(END_OF_TIME)
+
+val secondsDivider = mutableMapOf(
+    "seconds" to 1,
+    "minutes" to 60,
+    "hours" to 3600,
+    "days" to 86_400,
+    "weeks" to 604_800
 )
 
 fun main() {
@@ -32,21 +33,13 @@ fun main() {
 
 fun setRemaining() {
     val now = Date.now()
-    val diff = endOfTimeSeconds - now
-    remaining["seconds"] = if (diff > 0) (diff / 1000).roundToInt() else 0
-    remaining["minutes"] = calculateRemainingTime(diff, "seconds", 60)
-    remaining["hours"] = calculateRemainingTime(diff, "minutes", 60)
-    remaining["days"] = calculateRemainingTime(diff, "hours", 24)
-    remaining["weeks"] = calculateRemainingTime(diff, "hours", 168)
+    val remainingSeconds = ((endOfTimeSeconds - now) / 1000).roundToInt()
 
-    remaining.keys.forEach {
-        val span = document.querySelector("#$it")
-        span?.textContent = remaining[it].toString()
+    secondsDivider.forEach { (unit, divider) ->
+        val remainingTime = if (remainingSeconds > 0) remainingSeconds / divider else 0
+        document.querySelector("#$unit")?.textContent = remainingTime.toString()
     }
 }
-
-fun calculateRemainingTime(diff: Double, unit: String, divider: Int) =
-    if (diff > 0 && remaining[unit] != null) remaining[unit]!! / divider else 0
 
 fun Node.addContents() {
     append {
@@ -58,7 +51,7 @@ fun Node.addContents() {
         }
     }
 
-    remaining.keys.forEach {
+    secondsDivider.keys.forEach {
         append {
             div {
                 classes = setOf("line")
