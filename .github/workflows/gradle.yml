@@ -47,12 +47,15 @@ jobs:
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v2
-        
+      
+      - name: Zip artifact for deployment
+        run: zip release.zip ./build/distributions -r
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: 'build/distributions'
+          path: release.zip
 
       - name: Deploy to GitHub Pages
         id: deployment
