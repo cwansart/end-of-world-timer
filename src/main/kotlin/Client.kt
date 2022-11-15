@@ -33,15 +33,15 @@ val secondsDivider: Map<Unit, Divider> = mapOf(
 fun main() {
     window.onload = {
         document.querySelector("#container")?.addContents()
-        setRemaining()
+        renderRemainingTime()
 
         window.setInterval({
-            setRemaining()
+            renderRemainingTime()
         }, ONE_SECOND)
     }
 }
 
-fun setRemaining() {
+fun renderRemainingTime() {
     val now = Date.now()
     val remainingSeconds = ((endOfTimeSeconds - now) / MILLISECONDS_TO_SECONDS).roundToInt()
 
