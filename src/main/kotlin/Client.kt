@@ -9,17 +9,19 @@ import org.w3c.dom.Node
 import kotlin.js.Date
 import kotlin.math.roundToInt
 
-val endOfTime = Date("2022-12-23 16:00:00")
-val endOfTimeSeconds = Date.parse("2022-12-23 16:00:00")
+val endOfTime = Date("Fri, 23 Dec 2022 16:00:00 GMT+1")
+val endOfTimeSeconds = Date.parse("Fri, 23 Dec 2022 16:00:00 GMT+1")
+
+const val ONE_SECOND = 1_000
 
 fun main() {
     window.onload = {
-        document.body?.sayHello()
+        document.body?.addContents()
         setRemaining()
 
         window.setInterval({
             setRemaining()
-        }, 1000)
+        }, ONE_SECOND)
     }
 }
 
@@ -31,11 +33,12 @@ fun setRemaining() {
     val weeksSpan = document.querySelector("#weeks")
 
     val now = Date.now()
-    val seconds = ((endOfTimeSeconds - now) / 1000).roundToInt()
-    val minutes = seconds / 60
-    val hours = minutes / 60
-    val days = hours / 24
-    val weeks = hours / 168
+    val diff = endOfTimeSeconds - now
+    val seconds = if (diff > 0) (diff / 1000).roundToInt() else 0
+    val minutes = if (diff > 0) seconds / 60 else 0
+    val hours = if (diff > 0) minutes / 60 else 0
+    val days = if (diff > 0) hours / 24 else 0
+    val weeks = if (diff > 0) hours / 168 else 0
 
     secondsSpan?.textContent = seconds.toString()
     minutesSpan?.textContent = minutes.toString()
@@ -44,13 +47,13 @@ fun setRemaining() {
     weeksSpan?.textContent = weeks.toString()
 }
 
-fun Node.sayHello() {
+fun Node.addContents() {
     append {
         h1 {
             +"When will be the end of time?"
         }
         div {
-            +"The end of time is on ${endOfTime.toUTCString()}"
+            +"The end of time is on ${endOfTime.toDateString()} at ${endOfTime.toTimeString()}"
         }
         div {
             +"Seconds remaining: "
