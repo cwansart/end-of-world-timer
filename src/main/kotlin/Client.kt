@@ -24,7 +24,7 @@ val remaining = mutableMapOf(
 
 fun main() {
     window.onload = {
-        document.body?.addContents()
+        document.querySelector("#container")?.addContents()
         setRemaining()
 
         window.setInterval({
