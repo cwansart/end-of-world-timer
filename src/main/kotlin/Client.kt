@@ -7,17 +7,25 @@ import kotlin.js.Date
 import kotlin.math.roundToInt
 
 const val ONE_SECOND = 1_000
+
+const val MILLISECONDS_TO_SECONDS = 1_000
+const val NO_DIVISION = 1
+const val SECONDS_TO_MINUTES = 60
+const val SECONDS_TO_HOURS = 3_600
+const val SECONDS_TO_DAYS = 86_400
+const val SECONDS_TO_WEEKS = 604_800
+
 const val END_OF_TIME = "Fri, 23 Dec 2022 16:00:00 GMT+1"
 
 val endOfTime = Date(END_OF_TIME)
 val endOfTimeSeconds = Date.parse(END_OF_TIME)
 
 val secondsDivider = mutableMapOf(
-    "seconds" to 1,
-    "minutes" to 60,
-    "hours" to 3600,
-    "days" to 86_400,
-    "weeks" to 604_800
+    "seconds" to NO_DIVISION,
+    "minutes" to SECONDS_TO_MINUTES,
+    "hours" to SECONDS_TO_HOURS,
+    "days" to SECONDS_TO_DAYS,
+    "weeks" to SECONDS_TO_WEEKS
 )
 
 fun main() {
@@ -33,7 +41,7 @@ fun main() {
 
 fun setRemaining() {
     val now = Date.now()
-    val remainingSeconds = ((endOfTimeSeconds - now) / 1000).roundToInt()
+    val remainingSeconds = ((endOfTimeSeconds - now) / MILLISECONDS_TO_SECONDS).roundToInt()
 
     secondsDivider.forEach { (unit, divider) ->
         val remainingTime = if (remainingSeconds > 0) remainingSeconds / divider else 0
