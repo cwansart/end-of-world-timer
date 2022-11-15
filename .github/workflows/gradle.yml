@@ -47,17 +47,20 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v2
 
-    - name: Print distributions folder
-      run: ls -l build/distributions
-
-    - name: Zip artifact for deployment
-      run: zip -r release.zip build/distributions/*
+    - name: Archive artifact
+      shell: sh
+      run: |
+        tar \
+          --dereference --hard-dereference \
+          --directory "build/distributions/" \
+          -cvf "$RUNNER_TEMP/artifact.tar"
+          .
 
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-artifact@main
       with:
-        # Upload entire repository
-        path: release.zip
+        name: github-pages
+        path: ${{ runner.temp }}/artifact.tar
 
     - name: Deploy to GitHub Pages
       id: deployment
