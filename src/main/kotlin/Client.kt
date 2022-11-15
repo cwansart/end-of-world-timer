@@ -20,7 +20,9 @@ const val END_OF_TIME = "Fri, 23 Dec 2022 16:00:00 GMT+1"
 val endOfTime = Date(END_OF_TIME)
 val endOfTimeSeconds = Date.parse(END_OF_TIME)
 
-val secondsDivider = mapOf(
+typealias Unit = String
+typealias Divider = Int
+val secondsDivider: Map<Unit, Divider> = mapOf(
     "seconds" to NO_DIVISION,
     "minutes" to SECONDS_TO_MINUTES,
     "hours" to SECONDS_TO_HOURS,
@@ -45,7 +47,7 @@ fun setRemaining() {
 
     secondsDivider.forEach { (unit, divider) ->
         val remainingTime = if (remainingSeconds > 0) remainingSeconds / divider else 0
-        document.querySelector("#$unit")?.textContent = remainingTime.toLocaleString()
+        document.getElementById(unit)?.textContent = remainingTime.toLocaleString()
     }
 }
 
