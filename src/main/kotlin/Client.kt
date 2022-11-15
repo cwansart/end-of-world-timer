@@ -14,6 +14,14 @@ val endOfTimeSeconds = Date.parse("Fri, 23 Dec 2022 16:00:00 GMT+1")
 
 const val ONE_SECOND = 1_000
 
+val remaining = mutableMapOf(
+    "seconds" to 0,
+    "minutes" to 0,
+    "days" to 0,
+    "hours" to 0,
+    "weeks" to 0
+)
+
 fun main() {
     window.onload = {
         document.body?.addContents()
@@ -26,26 +34,22 @@ fun main() {
 }
 
 fun setRemaining() {
-    val secondsSpan = document.querySelector("#seconds")
-    val minutesSpan = document.querySelector("#minutes")
-    val hoursSpan = document.querySelector("#hours")
-    val daysSpan = document.querySelector("#days")
-    val weeksSpan = document.querySelector("#weeks")
-
     val now = Date.now()
     val diff = endOfTimeSeconds - now
-    val seconds = if (diff > 0) (diff / 1000).roundToInt() else 0
-    val minutes = if (diff > 0) seconds / 60 else 0
-    val hours = if (diff > 0) minutes / 60 else 0
-    val days = if (diff > 0) hours / 24 else 0
-    val weeks = if (diff > 0) hours / 168 else 0
+    remaining["seconds"] = if (diff > 0) (diff / 1000).roundToInt() else 0
+    remaining["minutes"] = calculateRemainingTime(diff, "seconds", 60)
+    remaining["hours"] = calculateRemainingTime(diff, "minutes", 60)
+    remaining["days"] = calculateRemainingTime(diff, "hours", 24)
+    remaining["weeks"] = calculateRemainingTime(diff, "hours", 168)
 
-    secondsSpan?.textContent = seconds.toString()
-    minutesSpan?.textContent = minutes.toString()
-    hoursSpan?.textContent = hours.toString()
-    daysSpan?.textContent = days.toString()
-    weeksSpan?.textContent = weeks.toString()
+    remaining.keys.forEach {
+        val span = document.querySelector("#$it")
+        span?.textContent = remaining[it].toString()
+    }
 }
+
+fun calculateRemainingTime(diff: Double, unit: String, divider: Int) =
+    if (diff > 0 && remaining[unit] != null) remaining[unit]!! / divider else 0
 
 fun Node.addContents() {
     append {
@@ -55,34 +59,15 @@ fun Node.addContents() {
         div {
             +"The end of time is on ${endOfTime.toDateString()} at ${endOfTime.toTimeString()}"
         }
-        div {
-            +"Seconds remaining: "
-            span {
-                id = "seconds"
-            }
-        }
-        div {
-            +"Minutes remaining: "
-            span {
-                id = "minutes"
-            }
-        }
-        div {
-            +"Hours remaining: "
-            span {
-                id = "hours"
-            }
-        }
-        div {
-            +"Days remaining: "
-            span {
-                id = "days"
-            }
-        }
-        div {
-            +"Weeks remaining: "
-            span {
-                id = "weeks"
+    }
+
+    remaining.keys.forEach {
+        append {
+            div {
+                +"${it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} remaining: "
+                span {
+                    id = it
+                }
             }
         }
     }
