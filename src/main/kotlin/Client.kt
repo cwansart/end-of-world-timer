@@ -17,8 +17,7 @@ const val SECONDS_TO_WEEKS = 604_800
 
 const val END_OF_TIME = "Fri, 23 Dec 2022 16:00:00 GMT+1"
 
-val endOfTime = Date(END_OF_TIME)
-val endOfTimeSeconds = Date.parse(END_OF_TIME)
+val endOfTimeMs = Date.parse(END_OF_TIME)
 
 typealias Unit = String
 typealias Divider = Int
@@ -43,7 +42,7 @@ fun main() {
 
 fun renderRemainingTime() {
     val now = Date.now()
-    val remainingSeconds = ((endOfTimeSeconds - now) / MILLISECONDS_TO_SECONDS).roundToInt()
+    val remainingSeconds = ((endOfTimeMs - now) / MILLISECONDS_TO_SECONDS).roundToInt()
 
     secondsDivider.forEach { (unit, divider) ->
         val remainingTime = if (remainingSeconds > 0 && divider > 0) remainingSeconds / divider else 0
@@ -58,12 +57,13 @@ fun Int.toLocaleString(): String {
 }
 
 fun Node.addContents() {
+    val endOfTimeDate = Date(END_OF_TIME)
     append {
         h1 {
             +"When will be the end of time?"
         }
         div {
-            +"The end of time is on ${endOfTime.toDateString()} at ${endOfTime.toTimeString()}"
+            +"The end of time is on ${endOfTimeDate.toDateString()} at ${endOfTimeDate.toTimeString()}"
         }
     }
 
