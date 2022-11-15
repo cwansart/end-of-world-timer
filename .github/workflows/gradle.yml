@@ -55,8 +55,13 @@ jobs:
       shell: sh
       run: |
         tar \
+          --dereference --hard-dereference \
           -cvf "$RUNNER_TEMP/artifact.tar" \
           build/distributions/*
+  
+    - name: Print artifact contents
+      shell: sh
+      run: tar -tf ${{ runner.temp }}/artifact.tar
 
     - name: Upload artifact
       uses: actions/upload-artifact@main
