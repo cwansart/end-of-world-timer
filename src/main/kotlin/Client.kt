@@ -46,7 +46,7 @@ fun setRemaining() {
     val remainingSeconds = ((endOfTimeSeconds - now) / MILLISECONDS_TO_SECONDS).roundToInt()
 
     secondsDivider.forEach { (unit, divider) ->
-        val remainingTime = if (remainingSeconds > 0) remainingSeconds / divider else 0
+        val remainingTime = if (remainingSeconds > 0 && divider > 0) remainingSeconds / divider else 0
         document.getElementById(unit)?.textContent = remainingTime.toLocaleString()
     }
 }
