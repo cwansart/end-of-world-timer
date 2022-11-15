@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="end-of-world-timer-1.0-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/build/libs</output-path>
+    <root id="archive" name="end-of-world-timer-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="end-of-world-timer.main" />
+    </root>
+  </artifact>
+</component>
