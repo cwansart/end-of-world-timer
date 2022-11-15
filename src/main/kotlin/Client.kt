@@ -37,8 +37,14 @@ fun setRemaining() {
 
     secondsDivider.forEach { (unit, divider) ->
         val remainingTime = if (remainingSeconds > 0) remainingSeconds / divider else 0
-        document.querySelector("#$unit")?.textContent = remainingTime.toString()
+        document.querySelector("#$unit")?.textContent = remainingTime.toLocaleString()
     }
+}
+
+fun Int.toLocaleString(): String {
+    @Suppress("UNUSED_VARIABLE")
+    val data = this
+    return js("data.toLocaleString()") as String
 }
 
 fun Node.addContents() {
